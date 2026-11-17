@@ -1,0 +1,14 @@
+**/secrets.h
+**/.env
+**/.env.*
+!**/.env.example
+**/node_modules/
+**/dist/
+
+# Local artifacts and credentials
+build/
+*.bak*
+**/.DS_Store
+**/*.log
+**/serviceAccount*.json
+**/*service-account*.json

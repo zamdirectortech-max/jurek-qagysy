@@ -1,0 +1,26 @@
+{
+ "rules": {
+  ".read": false,
+  ".write": false,
+  "readers": {".read": false,".write": false},
+  "writers": {".read": false,".write": false},
+  "hrv_measurements": {
+   ".read": "auth != null && root.child('readers').child(auth.uid).val() === true && query.orderByKey && query.limitToLast != null && query.limitToLast <= 300",
+   "$measurement": {
+    ".write": "auth != null && root.child('writers').child(auth.uid).val() === true && !data.exists() && newData.exists()",
+    ".validate": "newData.hasChildren(['boot_id','session_id','device_uptime_ms','duration_s','signal_quality'])",
+    "boot_id": {".validate":"newData.isString() && newData.val().length <= 64"},
+    "session_id": {".validate":"newData.isNumber() && newData.val() >= 0"},
+    "device_uptime_ms": {".validate":"newData.isNumber() && newData.val() >= 0"},
+    "duration_s": {".validate":"newData.isNumber() && newData.val() === 60"},
+    "signal_quality": {".validate":"newData.isString() && newData.val().length <= 64"},
+    "average_bpm": {".validate":"newData.isNumber() && newData.val() >= 0 && newData.val() <= 300"},
+    "mean_rr_ms": {".validate":"newData.isNumber() && newData.val() >= 0 && newData.val() <= 5000"},
+    "rmssd_ms": {".validate":"newData.isNumber() && newData.val() >= 0 && newData.val() <= 5000"},
+    "sdnn_ms": {".validate":"newData.isNumber() && newData.val() >= 0 && newData.val() <= 5000"},
+    "timestamp": {".validate":"newData.isNumber() && newData.val() <= now"},
+    "$other": {".validate":"newData.isNumber() || newData.isBoolean() || (newData.isString() && newData.val().length <= 128)"}
+   }
+  }
+ }
+}
